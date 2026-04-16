@@ -1,6 +1,6 @@
 import '@expo/metro-runtime';
-import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, ScrollView, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ThemeProvider, createTheme, Button, ButtonGroup, Text } from '@rneui/themed';
@@ -41,7 +41,12 @@ export const Question = ({ route, navigation }) => {
         onPress={(v) => isMultiple ? setMultiIdxs(v) : setSingleIdx(v)}
         vertical
       />
-      <Button testID="next-question" title="Next" onPress={handleNext} disabled={isMultiple ? multiIdxs.length === 0 : singleIdx === null} />
+      <Button 
+        testID="next-question" 
+        title="Next Question" 
+        onPress={handleNext} 
+        disabled={isMultiple ? multiIdxs.length === 0 : singleIdx === null} 
+      />
     </View>
   );
 };
@@ -71,30 +76,20 @@ export const Summary = ({ route }) => {
 
 export default function App() {
   const quizData = [
-    { 
-      prompt: "Which Ancient Cookie founded the Vanilla Kingdom?", 
-      type: "multiple-choice", 
-      choices: ["Pure Vanilla", "White Lily", "Hollyberry", "Dark Cacao"], 
-      correct: 0 },
-    { 
-      prompt: "Select the members of the Ancient Heroes:", 
-      type: "multiple-answer", 
-      choices: ["Pure Vanilla", "Sea Fairy", "Hollyberry", "Frost Queen"], 
-      correct: [0, 2] 
-    },
-    { 
-      prompt: "White Lily and Dark Enchantress are the same person.", 
-      type: "true-false", 
-      choices: ["True", "False"], 
-      correct: 0 
-    }
+    { prompt: "Which Ancient Cookie founded the Vanilla Kingdom?", type: "multiple-choice", choices: ["Pure Vanilla", "White Lily", "Hollyberry", "Dark Cacao"], correct: 0 },
+    { prompt: "Select the members of the Ancient Heroes:", type: "multiple-answer", choices: ["Pure Vanilla", "Sea Fairy", "Hollyberry", "Frost Queen"], correct: [0, 2] },
+    { prompt: "White Lily and Dark Enchantress are the same person.", type: "true-false", choices: ["True", "False"], correct: 0 }
   ];
 
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Question" component={Question} initialParams={{ data: quizData, index: 0 }} />
+        <Stack.Navigator screenOptions={{ headerShown: true }}>
+          <Stack.Screen 
+            name="Question" 
+            component={Question} 
+            initialParams={{ data: quizData, index: 0 }} 
+          />
           <Stack.Screen name="Summary" component={Summary} />
         </Stack.Navigator>
       </NavigationContainer>
@@ -103,29 +98,10 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    padding: 20, 
-    backgroundColor: '#fff' 
-  },
-  center: { 
-    textAlign: 'center', 
-    marginBottom: 20 
-  },
-  card: { 
-    padding: 15, 
-    borderBottomWidth: 1, 
-    borderColor: '#eee' 
-  },
-  bold: { 
-    fontWeight: 'bold' 
-  },
-  correct: { 
-    fontWeight: 'bold', 
-    color: 'green' 
-  },
-  wrong: { 
-    textDecorationLine: 'line-through', 
-    color: 'red' 
-  }
+  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
+  center: { textAlign: 'center', marginBottom: 20 },
+  card: { padding: 15, borderBottomWidth: 1, borderColor: '#eee' },
+  bold: { fontWeight: 'bold', marginBottom: 5 },
+  correct: { fontWeight: 'bold', color: 'green' },
+  wrong: { textDecorationLine: 'line-through', color: 'red' }
 });
