@@ -24,10 +24,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "bundler": "metro"
-    },
-    "experiments": {
-      "baseUrl": "/QuizApp1"
+      "bundler": "metro",
+      "output": "static"
     }
   }
 }
